@@ -1,0 +1,7 @@
+{
+  "name": "time-since",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
