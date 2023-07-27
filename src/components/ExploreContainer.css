@@ -22,3 +22,8 @@
 #container a {
   text-decoration: none;
 }
+
+ion-fab-button {
+  margin-inline-end: 1rem;
+  margin-block-end: 1rem;
+}
