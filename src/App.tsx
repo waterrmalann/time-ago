@@ -44,7 +44,6 @@ const App: React.FC = () => (
                     <Route exact path="/details/:id">
                         <Details />
                     </Route>
-
                 </IonRouterOutlet>
             </IonReactRouter>
         </CounterProvider>

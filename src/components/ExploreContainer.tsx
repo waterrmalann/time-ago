@@ -1,8 +1,9 @@
 import { useIonRouter, IonItem, IonLabel, IonList, IonReorderGroup, IonChip, IonReorder, IonFab, IonFabButton, IonIcon } from '@ionic/react';
-import { add } from 'ionicons/icons';
+import { add, time } from 'ionicons/icons';
 import './ExploreContainer.css';
 import { CounterContext } from '../contexts/CounterContexts';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
+import {getTimePassedFromUnixTimestamp} from '../utils/funcs.ts'; 
 
 interface ContainerProps { }
 
@@ -10,24 +11,15 @@ type LiveCounterType = {
     [key: string]: string
 }
 
-function getTimePassedFromUnixTimestamp(unixTimestamp: number): string {
-    const currentTime = Date.now() / 1000; // Convert to seconds
-    const timePassedInSeconds = Math.abs(currentTime - (unixTimestamp / 1000));
-
-    const hours = Math.floor(timePassedInSeconds / 3600);
-    const minutes = Math.floor((timePassedInSeconds % 3600) / 60);
-    const seconds = Math.floor(timePassedInSeconds % 60);
-
-    const formattedTime = `${hours}h:${minutes}m:${seconds}s`;
-    return formattedTime;
-}
-
 const ExploreContainer: React.FC<ContainerProps> = () => {
     const router = useIonRouter();
     const { counters, setCounters } = useContext(CounterContext);
+
+    // Initialize liveCounters (state) 
     const [liveCounters, setLiveCounters] = useState<LiveCounterType>(() => {
         const initialLiveCounters: LiveCounterType = {};
 
+        // By default, parse all the timestamps of currently open timers.
         for (const counter in counters) {
             const timestamp = counters[counter].timestamp;
             initialLiveCounters[timestamp] = getTimePassedFromUnixTimestamp(timestamp);
@@ -35,6 +27,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         return initialLiveCounters;
     });
 
+    // We need to update the live counters every second (explore tab)
     useEffect(() => {
         const updateCounters = () => {
             const updatedCounters: LiveCounterType = {};
@@ -43,15 +36,16 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
                 const timestamp = Number(counter);
                 updatedCounters[counter.toString()] = getTimePassedFromUnixTimestamp(timestamp);
             }
-            console.log(liveCounters);
+            // console.groupCollapsed("Live Counters");
+            // console.log(liveCounters);
+            // console.groupEnd();
             setLiveCounters(prev => updatedCounters);
-
         };
 
-        const intervalId = setInterval(updateCounters, 1000);
+        const interval = setInterval(updateCounters, 1000);
 
         // Cleanup the interval when the component unmounts
-        return () => clearInterval(intervalId);
+        return () => clearInterval(interval);
     }, [liveCounters]);
 
     useEffect(() => {

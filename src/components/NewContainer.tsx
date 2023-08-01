@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import {Counter, CounterContext} from '../contexts/CounterContexts';
 
-import { useIonRouter, IonItem, IonLabel, IonList, IonReorderGroup, IonChip, IonReorder, IonFab, IonFabButton, IonIcon, IonInput } from '@ionic/react';
+import { useIonRouter, IonItem, IonLabel, IonFab, IonFabButton, IonIcon, IonInput } from '@ionic/react';
 import {chevronForward} from 'ionicons/icons';
 import './NewContainer.css';
 
