@@ -9,7 +9,7 @@ const Home: React.FC = () => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Time Since</IonTitle>
+                    <IonTitle>Time Ago</IonTitle>
                     <IonButtons slot="end">
                         <IonButton><IonIcon slot="icon-only" icon={menuOutline}></IonIcon></IonButton>
                     </IonButtons>
@@ -18,7 +18,7 @@ const Home: React.FC = () => {
             <IonContent fullscreen>
                 <IonHeader collapse="condense">
                     <IonToolbar>
-                        <IonTitle size="large">Time Since</IonTitle>
+                        <IonTitle size="large">Time Ago</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <ExploreContainer />

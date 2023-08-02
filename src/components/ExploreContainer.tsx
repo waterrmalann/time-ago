@@ -3,7 +3,7 @@ import { add, time } from 'ionicons/icons';
 import './ExploreContainer.css';
 import { CounterContext } from '../contexts/CounterContexts';
 import { useContext, useEffect, useState, useRef } from 'react';
-import {getTimePassedFromUnixTimestamp} from '../utils/funcs.ts'; 
+import {getTimePassedFromUnixTimestamp} from '../utils/funcs'; 
 
 interface ContainerProps { }
 
@@ -14,6 +14,7 @@ type LiveCounterType = {
 const ExploreContainer: React.FC<ContainerProps> = () => {
     const router = useIonRouter();
     const { counters, setCounters } = useContext(CounterContext);
+    const interval = useRef<NodeJS.Timeout>();
 
     // Initialize liveCounters (state) 
     const [liveCounters, setLiveCounters] = useState<LiveCounterType>(() => {
@@ -30,22 +31,22 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     // We need to update the live counters every second (explore tab)
     useEffect(() => {
         const updateCounters = () => {
-            const updatedCounters: LiveCounterType = {};
-
-            for (const counter in liveCounters) {
-                const timestamp = Number(counter);
-                updatedCounters[counter.toString()] = getTimePassedFromUnixTimestamp(timestamp);
-            }
-            // console.groupCollapsed("Live Counters");
-            // console.log(liveCounters);
-            // console.groupEnd();
-            setLiveCounters(prev => updatedCounters);
+            setLiveCounters((prevLiveCounters) => {
+                const updatedCounters: LiveCounterType = {};
+          
+                for (const counter in prevLiveCounters) {
+                  const timestamp = Number(counter);
+                  updatedCounters[counter.toString()] = getTimePassedFromUnixTimestamp(timestamp);
+                }
+          
+                return updatedCounters;
+              });
         };
 
-        const interval = setInterval(updateCounters, 1000);
+        interval.current = setInterval(updateCounters, 1000);
 
         // Cleanup the interval when the component unmounts
-        return () => clearInterval(interval);
+        return () => clearInterval(interval.current);
     }, [liveCounters]);
 
     useEffect(() => {

@@ -90,10 +90,10 @@ const DetailsContainer: React.FC<ContainerProps> = () => {
                     <IonCardSubtitle><IonChip>{liveCounter}</IonChip></IonCardSubtitle>
                 </IonCardHeader>
             </IonCard>
-            <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
+            <IonDatetimeButton className="ion-padding-vertical" datetime="datetime"></IonDatetimeButton>
 
             <IonModal keepContentsMounted={true}>
-                <IonDatetime onIonChange={handleDateChange} showDefaultButtons={true} id="datetime">
+                <IonDatetime value={new Date(currentCounter!.timestamp).toISOString()} onIonChange={handleDateChange} showDefaultButtons={true} id="datetime">
                 <span slot="title">Select a new date to start from.</span>
                 </IonDatetime>
             </IonModal>

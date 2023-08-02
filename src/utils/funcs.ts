@@ -16,3 +16,12 @@ export function getTimePassedFromUnixTimestamp(unixTimestamp: number): string {
 
     return formattedTime;
 }
+
+export function getRandomElement<T>(array: T[]): T | null {
+    if (array.length === 0) {
+      return null;
+    }
+  
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
+  }
